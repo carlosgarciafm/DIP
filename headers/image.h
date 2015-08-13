@@ -10,10 +10,10 @@ public:
   Image(int width, int height);
   Image(const Image& other);
 
-  int getPixel(int i, int j) const {
+  int getPixel(int j, int i) const {
     return _pixels[(i * _width) + j];
   }
-  int setPixel(int i, int j, int value) {
+  int setPixel(int j, int i, int value) {
     _pixels[(i * _width) + j] = value;
   }
   void read(std::string file_name);

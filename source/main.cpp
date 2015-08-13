@@ -6,5 +6,8 @@ using namespace std;
 int main() {
   Image I;
   I.read("bc.pgm");
-  // cout << I.getPixel(590, 390) << endl;
+  
+  int widht, height;
+  cin >> widht >> height;
+  cout << I.getPixel(widht, height) << endl;
 }
