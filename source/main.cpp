@@ -1,7 +1,7 @@
+#include "image.h"
+
 #include <iostream>
 using namespace std;
-
-#include "image.h"
 
 int main() {
   Image I;
