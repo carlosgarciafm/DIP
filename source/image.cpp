@@ -51,7 +51,7 @@ void Image::read(string file_name) {
 void Image::write(string file_name) const {
   ofstream F(file_name.c_str());
   F << "P2" << endl;
-  F << "This file was written by CarlosGarcia" << endl;
+  F << "# This file was written by CarlosGarcia" << endl;
   F << _width << ' ' << _height << endl;
   F << _max << endl;
   for(int i = 0; i < _pixels.size(); i++) {
