@@ -8,16 +8,19 @@ using namespace std;
 Image::Image() {
   _width = 0;
   _height = 0;
+  _max = 0;
 }
 
-Image::Image(int width, int height) : _pixels(width * height, 0) {
+Image::Image(int width, int height, int max) : _pixels(width * height, 0) {
   _width = width;
   _height = height;
+  _max = max;
 }
 
 Image::Image(const Image& other) : _pixels(other._pixels) {
   _width = other._width;
   _height = other._height;
+  _max = other._max;
 }
 
 void Image::read(string file_name) {
@@ -26,26 +29,35 @@ void Image::read(string file_name) {
     cout << "COULD NOT OPEN GIVEN FILE" << endl;
     return;
   }
-
   string line;
   getline(F, line);
   if(line != "P2") {
     cout << "WRONG FORMAT" << endl;
     return;
   }
-
   getline(F, line);
   while(line[0] == '#') {
     getline(F, line);
   }
-
   istringstream S(line);
   S >> _width >> _height;
-
-  int max;
-  F >> max;
+  F >> _max;
   _pixels.resize(_width * _height);
   for(int i = 0; i < _pixels.size(); i++) {
     F >> _pixels[i];
+  }
+}
+
+void Image::write(string file_name) const {
+  ofstream F(file_name.c_str());
+  F << "P2" << endl;
+  F << "This file was written by CarlosGarcia" << endl;
+  F << _width << ' ' << _height << endl;
+  F << _max << endl;
+  for(int i = 0; i < _pixels.size(); i++) {
+    F << _pixels[i] << ' ';
+    if(i % _width == (_width - 1)) {
+      F << endl;
+    }
   }
 }

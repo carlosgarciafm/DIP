@@ -4,10 +4,11 @@
 class Image {
   std::vector<int> _pixels;
   int _width, _height;
+  int _max;
 
 public:
   Image();
-  Image(int width, int height);
+  Image(int width, int height, int max);
   Image(const Image& other);
 
   int getPixel(int j, int i) const {
@@ -17,4 +18,5 @@ public:
     _pixels[(i * _width) + j] = value;
   }
   void read(std::string file_name);
+  void write(std::string file_name) const;
 };

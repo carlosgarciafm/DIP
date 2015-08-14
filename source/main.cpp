@@ -5,9 +5,9 @@ using namespace std;
 
 int main() {
   Image I;
-  I.read("/home/zero/carlosgarcia/PID/bc.pgm");
-
-  int widht, height;
-  cin >> widht >> height;
-  cout << I.getPixel(widht, height) << endl;
+  I.read("bc.pgm");
+  I.write("output.pgm");
+  // int widht, height;
+  // cin >> widht >> height;
+  // cout << I.getPixel(widht, height) << endl;
 }
