@@ -30,3 +30,6 @@
 
 # Images pgm
 *.pgm
+
+# Test files
+*.txt
