@@ -32,4 +32,5 @@
 *.pgm
 
 # Test files
+sandbox/*
 *.txt
