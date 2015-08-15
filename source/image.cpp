@@ -90,3 +90,9 @@ void Image::stamp(int j, int i, const Image& P) {
     }
   }
 }
+
+void Image::negative(){
+  for(int i = 0; i < _pixels.size(); i++) {
+    _pixels[i] = _max - _pixels[i];
+  }
+}

@@ -23,4 +23,5 @@ public:
   void write(std::string file_name) const;
   Image chunk(int j1, int i1, int j2, int i2) const;     // j are  width; i are height
   void stamp(int j, int i, const Image& P);
+  void negative();
 };

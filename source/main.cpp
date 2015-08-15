@@ -19,6 +19,8 @@ int main() {
   cin >> j3 >> i3;
   P.stamp(j3, i3, A);
   P.write("pgm/output_stamp.pgm");
+  P.negative();
+  P.write("pgm/output_negative.pgm");
 
   // int widht, height;
   // cin >> widht >> height;
