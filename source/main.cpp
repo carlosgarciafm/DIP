@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
   Image I;
-  I.read("bc.pgm");
+  I.read("pgm/bc.pgm");
 
   Image A;
   int j1 = 0, i1 = 0, j2 = 0, i2 = 0;
@@ -18,8 +18,8 @@ int main() {
   cout << "Please input the coordinates where you want to paste the chunk, use (j3, i3): ";
   cin >> j3 >> i3;
   P.paste(j3, i3, A);
-  P.write("output_paste.pgm");
-  
+  P.write("pgm/output_paste.pgm");
+
   // int widht, height;
   // cin >> widht >> height;
   // cout << I.getPixel(widht, height) << endl;
