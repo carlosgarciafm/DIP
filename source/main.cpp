@@ -15,10 +15,10 @@ int main() {
 
   Image P(800, 800, 255);
   int j3 = 0, i3 = 0;
-  cout << "Please input the coordinates where you want to paste the chunk, use (j3, i3): ";
+  cout << "Please input the coordinates where you want to stamp the chunk, use (j3, i3): ";
   cin >> j3 >> i3;
-  P.paste(j3, i3, A);
-  P.write("pgm/output_paste.pgm");
+  P.stamp(j3, i3, A);
+  P.write("pgm/output_stamp.pgm");
 
   // int widht, height;
   // cin >> widht >> height;

@@ -81,7 +81,7 @@ Image Image::chunk(int j1, int i1, int j2, int i2) const {
   return A;
 }
 
-void Image::paste(int j, int i, const Image& P) {
+void Image::stamp(int j, int i, const Image& P) {
   for(int m = i; m < (i + P.height()); m++) {
     for(int n = j; n < (j + P.width()); n++) {
       int x = m - i;
