@@ -61,3 +61,22 @@ void Image::write(string file_name) const {
     }
   }
 }
+
+void checkUp(int &j1, int &i1, int &j2, int &i2, int width, int height) {
+    if(j1 < 0) j1 = 0;
+    if(j2 > width) j2 = width;
+    if(i1 < 0) i1 = 0;
+    if(i2 > height) i2 = height;
+}
+Image Image::chunk(int j1, int i1, int j2, int i2) const {
+  checkUp(j1, i1, j2, i2, _width, _height);
+  Image A((j2 - j1), (i2 - i1), _max);
+  for(int m = i1; m < i2; m++) {
+    for(int n = j1; n < j2; n++) {
+      int ip = m - i1;
+      int jp = n - j1;
+      A.setPixel(jp, ip, getPixel(n, m));
+    }
+  }
+  return A;
+}
