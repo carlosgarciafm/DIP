@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cmath>
 using namespace std;
 
 Image::Image() {
@@ -91,8 +92,16 @@ void Image::stamp(int j, int i, const Image& P) {
   }
 }
 
-void Image::negative(){
+void Image::negative() {
   for(int i = 0; i < _pixels.size(); i++) {
     _pixels[i] = _max - _pixels[i];
+  }
+}
+
+void Image::posterize(int levels) {
+  for(int i = 0; i < _pixels.size(); i++) {
+    double value = double(_pixels[i]) / _max * (levels - 1);
+    value = round(value);
+    _pixels[i] = int(value * _max / (levels - 1));
   }
 }
