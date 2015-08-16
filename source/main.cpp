@@ -10,7 +10,7 @@ int main() {
   //     I.setPixel(j, i, j);
   //   }
   // }
-  I.read("pgm/bc.pgm");
+  I.read("pbm/bc.pgm");
 
   // Image A;
   // int j1 = 0, i1 = 0, j2 = 0, i2 = 0;
@@ -30,6 +30,6 @@ int main() {
   int levels = 0;
   cin >> levels;
   I.posterize(levels);
-  I.write("pgm/output_posterize.pgm");
+  I.write("pbm/output_posterize.pgm");
 
 }
