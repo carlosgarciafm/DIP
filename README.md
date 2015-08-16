@@ -1,3 +1,3 @@
-# DIP
-Project dedicated to DIP and its basis.
+# PBM
+Project dedicated to PBM and its basis.
 
