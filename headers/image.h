@@ -3,6 +3,7 @@
 
 class Image {
   std::vector<int> _pixels;
+  std::vector<int> _histogram;
   int _width, _height;
   int _max;
 
@@ -13,6 +14,7 @@ public:
 
   int width() const { return _width; }
   int height() const { return _height; }
+  int max() const { return _max; }
   int getPixel(int j, int i) const {
     return _pixels[(i * _width) + j];
   }
@@ -25,4 +27,6 @@ public:
   void stamp(int j, int i, const Image& P);
   void negative();
   void posterize(int levels);
+  void histogram();
+  void histogramDisplay();
 };

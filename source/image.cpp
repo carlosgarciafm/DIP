@@ -9,16 +9,16 @@ using namespace std;
 Image::Image() {
   _width = 0;
   _height = 0;
-  _max = 0;
+  _max = 255;
 }
 
-Image::Image(int width, int height, int max) : _pixels(width * height, 0) {
+Image::Image(int width, int height, int max) : _pixels(width * height, 0), _histogram(width * height, 0) {
   _width = width;
   _height = height;
   _max = max;
 }
 
-Image::Image(const Image& other) : _pixels(other._pixels) {
+Image::Image(const Image& other) : _pixels(other._pixels), _histogram(other._histogram) {
   _width = other._width;
   _height = other._height;
   _max = other._max;
@@ -103,5 +103,22 @@ void Image::posterize(int levels) {
     double value = double(_pixels[i]) / _max * (levels - 1);
     value = round(value);
     _pixels[i] = int(value * _max / (levels - 1));
+  }
+}
+
+void Image::histogram() {
+  _histogram.resize(_max + 1);
+  for(int i = 0; i < _pixels.size(); i++) {
+    int value = _pixels[i];
+    // cout << value << endl;
+    _histogram[value] += 1;
+    // cout << i << " = " << _histogram[i] << endl;
+  }
+}
+
+// ToDo: implement a way to plot the results
+void Image::histogramDisplay() {
+  for(int j = 0; j < _histogram.size(); j++){
+    cout << j << " = " << _histogram[j] << endl;
   }
 }
