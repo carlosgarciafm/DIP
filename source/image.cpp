@@ -13,14 +13,16 @@ Image::Image() {
 }
 
 Image::Image(int width, int height, int max) : _pixels(width * height, 0),
-                                               _histogram(width * height, 0) {
+                                               _histogram(width * height, 0),
+                                               _plot(width * height, 0) {
   _width = width;
   _height = height;
   _max = max;
 }
 
 Image::Image(const Image& other) : _pixels(other._pixels),
-                                   _histogram(other._histogram) {
+                                   _histogram(other._histogram),
+                                   _plot(other._plot) {
   _width = other._width;
   _height = other._height;
   _max = other._max;
@@ -108,12 +110,34 @@ void Image::posterize(int levels) {
   }
 }
 
-void Image::histogram() {
+void Image::histogram(string plot_name) {
+  int top = 0;
   _histogram.resize(_max + 1);
   for(int i = 0; i < _pixels.size(); i++) {
     int value = _pixels[i];
     _histogram[value] += 1;
+    if(_histogram[value] > top) top = _histogram[value];
+  }
+  for(int i = 0; i < _histogram.size(); i++) {
+    cout << i << " = " << _histogram[i] << endl;
+  }
+  histogramPlot(top, plot_name);
+}
+void Image::histogramPlot(int top, string plot_name) {
+  _plot.resize(top * (_max + 1));
+  for(int j = 0; j < (_max + 1); j++) {
+    for(int i = top - 1; i >= 0 ; i--) {
+      if(i >= top - _histogram[j]) {
+        setPlot(j, i);
+      }
+    }
+  }
+  ofstream F(plot_name.c_str());
+  F << "P2" << endl;
+  F << "# This file was written by CarlosGarcia" << endl;
+  F << _max + 1 << ' ' << top << endl;
+  F << _max << endl;
+  for(int m = 0; m < _plot.size(); m++) {
+    F << _plot[m] << endl;
   }
 }
-
-// ToDo: implement a way to plot the results
