@@ -110,6 +110,24 @@ void Image::posterize(int levels) {
   }
 }
 
+Image Image::zoom(int factor) {
+  // checkUp(j1, i1, j2, i2, _width, _height);
+  int width = _width * factor;
+  int height = _height * factor;
+  Image Z(width, height, _max);
+  for(int m = 0; m < _height; m++) {
+    for(int n = 0; n < _width; n++) {
+      for(int i = m * factor; i < (m * factor) + factor; i++) {
+        for(int j = n * factor; j < (n * factor) + factor; j++) {
+          // cout << "m,n j,i: " << m << ',' << n << ' ' << j << ',' << i << endl;
+          Z.setPixel(j,i,getPixel(n,m));
+        }
+      }
+    }
+  }
+  return Z;
+}
+
 void Image::histogram(string plot_name) {
   int top = 0;
   _histogram.resize(_max + 1);
