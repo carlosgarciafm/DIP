@@ -11,9 +11,10 @@ int main() {
     }
   }
   // cout << "image created" << endl;
+  I.write("pbm/original.pgm");
   Image Z;
   // cout << "image created" << endl;
-  Z = I.zoom(9);
+  Z = I.zoom(1,1,3,3,6);
   // cout << "zoom method applied" << endl;
   Z.write("pbm/zoom.pgm");
   // cout << "file written" << endl;

@@ -68,10 +68,12 @@ void Image::write(string file_name) const {
 }
 
 void checkUp(int &j1, int &i1, int &j2, int &i2, int width, int height) {
-    if(j1 < 0) j1 = 0;
-    if(j2 > width) j2 = width;
-    if(i1 < 0) i1 = 0;
-    if(i2 > height) i2 = height;
+    int c = 0;
+    if(j1 < 0) { j1 = 0; c++; }
+    if(j2 > width) { j2 = width; c++; }
+    if(i1 < 0) { i1 = 0; c++; }
+    if(i2 > height) { i2 = height; c++; }
+    if(c != 0) cout << "At least one of the given coordinates is out of the image range" << endl;
 }
 Image Image::chunk(int j1, int i1, int j2, int i2) const {
   checkUp(j1, i1, j2, i2, _width, _height);
@@ -110,21 +112,36 @@ void Image::posterize(int levels) {
   }
 }
 
-Image Image::zoom(int factor) {
-  // checkUp(j1, i1, j2, i2, _width, _height);
-  int width = _width * factor;
-  int height = _height * factor;
+Image Image::zoom(int j1, int i1, int j2, int i2, int factor) {
+  Image B;
+  B = chunk(j1, i1, j2, i2);
+  int width = (j2 - j1) * factor;
+  int height = (i2 - i1) * factor;
   Image Z(width, height, _max);
-  for(int m = 0; m < _height; m++) {
-    for(int n = 0; n < _width; n++) {
-      for(int i = m * factor; i < (m * factor) + factor; i++) {
-        for(int j = n * factor; j < (n * factor) + factor; j++) {
-          // cout << "m,n j,i: " << m << ',' << n << ' ' << j << ',' << i << endl;
-          Z.setPixel(j,i,getPixel(n,m));
+  for(int m = 0; m < B.height(); m++) {
+    for(int n = 0; n < B.width(); n++) {
+      for(int i = m * factor; i < m * factor + factor; i++) {
+        for(int j = n * factor; j < n * factor + factor; j++) {
+          // cout << "m,n i,j: " << m << ',' << n << ' ' << i << ',' << j << endl;
+          Z.setPixel(j, i, getPixel(n, m));
         }
       }
     }
   }
+  // for(int m = i1; m < i2; m++) {
+  //   for(int n = j1; n < j2; n++) {
+  //     for(int i = m - i1; i < m - i1 + factor; i++) {
+  //       for(int j = n - j1; j < n - j1 + factor; j++) {
+  //         int x = m - i1 + i;
+  //         int y = n - j1 + j;
+  //         if(m != i1) x++;
+  //         if(n != j1) y++;
+  //         cout << "m,n i,j: " << m << ',' << n << ' ' << x << ',' << y << endl;
+  //         Z.setPixel(j,i,getPixel(y,x));
+  //       }
+  //     }
+  //   }
+  // }
   return Z;
 }
 

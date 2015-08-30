@@ -29,7 +29,7 @@ public:
   void stamp(int j, int i, const Image& P);
   void negative();
   void posterize(int levels);
-  Image zoom(int factor);
+  Image zoom(int j1, int i1, int j2, int i2, int factor);
 
   int getPlot(int j, int i) {
     return _plot[(i * (_max + 1)) + j];
