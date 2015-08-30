@@ -30,6 +30,7 @@ public:
   void negative();
   void posterize(int levels);
   Image zoom(int j1, int i1, int j2, int i2, int factor);
+  void rotate(int degree);
 
   int getPlot(int j, int i) {
     return _plot[(i * (_max + 1)) + j];

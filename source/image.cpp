@@ -130,6 +130,23 @@ Image Image::zoom(int j1, int i1, int j2, int i2, int factor) {
   return Z;
 }
 
+void Image::rotate(int degree) {
+  Image A(_width, _height, _max);
+  for(int n = 0; n < _pixels.size(); n++) {
+    A._pixels[n] = _pixels[n];
+  }
+  // int aux = _width;
+  _width = A.height(), _height = A.width();
+  for(int j = 0; j < _width; j++) {
+    for(int i = _height - 1; i >= 0; i--) {
+      // cout << j << ',' << i << ':' << A.width() - i - 1 << ',' << j << endl;
+      setPixel(j,i, A.getPixel(A.width() - i - 1, j));
+    }
+  }
+  // cout << "input: " << _width << ',' << _height << endl;
+  // return B;
+}
+
 void Image::histogram(string plot_name) {
   int top = 0;
   _histogram.resize(_max + 1);
