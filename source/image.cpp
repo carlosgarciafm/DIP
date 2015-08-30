@@ -122,26 +122,11 @@ Image Image::zoom(int j1, int i1, int j2, int i2, int factor) {
     for(int n = 0; n < B.width(); n++) {
       for(int i = m * factor; i < m * factor + factor; i++) {
         for(int j = n * factor; j < n * factor + factor; j++) {
-          // cout << "m,n i,j: " << m << ',' << n << ' ' << i << ',' << j << endl;
           Z.setPixel(j, i, getPixel(n, m));
         }
       }
     }
   }
-  // for(int m = i1; m < i2; m++) {
-  //   for(int n = j1; n < j2; n++) {
-  //     for(int i = m - i1; i < m - i1 + factor; i++) {
-  //       for(int j = n - j1; j < n - j1 + factor; j++) {
-  //         int x = m - i1 + i;
-  //         int y = n - j1 + j;
-  //         if(m != i1) x++;
-  //         if(n != j1) y++;
-  //         cout << "m,n i,j: " << m << ',' << n << ' ' << x << ',' << y << endl;
-  //         Z.setPixel(j,i,getPixel(y,x));
-  //       }
-  //     }
-  //   }
-  // }
   return Z;
 }
 
