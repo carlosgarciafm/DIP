@@ -135,13 +135,36 @@ void Image::rotate(int degree) {
   for(int n = 0; n < _pixels.size(); n++) {
     A._pixels[n] = _pixels[n];
   }
-  // int aux = _width;
-  _width = A.height(), _height = A.width();
-  for(int j = 0; j < _width; j++) {
-    for(int i = _height - 1; i >= 0; i--) {
-      // cout << j << ',' << i << ':' << A.width() - i - 1 << ',' << j << endl;
-      setPixel(j,i, A.getPixel(A.width() - i - 1, j));
-    }
+  switch (degree) {
+    case 90:
+      _width = A.height(), _height = A.width();
+      for(int j = 0; j < _width; j++) {
+        for(int i = _height - 1; i >= 0; i--) {
+          // cout << j << ',' << i << ':' << A.width() - i - 1 << ',' << j << endl;
+          setPixel(j,i, A.getPixel(A.width() - i - 1, j));
+        }
+      }
+      break;
+    case 180:
+      for(int i = _height - 1; i >= 0; i--) {
+        for(int j = _width - 1; j >= 0; j--) {
+          // cout << j << ',' << i << ':' << A.width() - i - 1 << ',' << j << endl;
+          setPixel(j,i, A.getPixel(_width - j - 1, _height - i - 1));
+        }
+      }
+      break;
+    case 270:
+      _width = A.height(), _height = A.width();
+      for(int j = _width - 1; j >= 0 ; j--) {
+        for(int i = 0; i < _height; i++) {
+          // cout << j << ',' << i << ':' << A.width() - i - 1 << ',' << j << endl;
+          setPixel(j,i, A.getPixel(i, A.height() - j - 1));
+        }
+      }
+      break;
+    default:
+      cout << "NO VALID ROTATION VALUE" << endl <<
+              "THE ORIGINAL IMAGE WILL BE GIVEN BACK" << endl;
   }
   // cout << "input: " << _width << ',' << _height << endl;
   // return B;

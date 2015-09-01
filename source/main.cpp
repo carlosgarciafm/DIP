@@ -12,11 +12,14 @@ int main() {
   // }
   // I.write("pbm/original.pgm");
   Image I;
-  I.read("pbm/rotate.pgm");
-  I.histogram(600,"pbm/h_rotate.pgm");
+  I.read("pbm/bc.pgm");
+  // I.histogram(600,"pbm/h_rotate.pgm");
   // Image I;
   // I.read("pbm/bc.pgm");
-  // I.rotate(90);
-  // I.write("pbm/rotate.pgm");
+  // Image A(I);
+  // A.rotate(270);
+  // A.write("pbm/rotate270.pgm");
+  I.rotate(920);
+  I.write("pbm/rotate920.pgm");
   return 0;
 }
