@@ -35,9 +35,9 @@ public:
   int getPlot(int j, int i) {
     return _plot[(i * (_max + 1)) + j];
   }
-  int setPlot(int j, int i) {
-    _plot[(i * (_max + 1)) + j] = _max;
+  int setPlot(int j, int i, int value) {
+    _plot[(i * (_max + 1)) + j] = value;
   }
-  void histogram(std::string plot_name);
-  void histogramPlot(int top, std::string plot_name);
+  void histogram(int ceiling, std::string plot_name);
+  void histogramPlot(int top, int ceiling, std::string plot_name);
 };
