@@ -140,7 +140,6 @@ void Image::rotate(int degree) {
       _width = A.height(), _height = A.width();
       for(int j = 0; j < _width; j++) {
         for(int i = _height - 1; i >= 0; i--) {
-          // cout << j << ',' << i << ':' << A.width() - i - 1 << ',' << j << endl;
           setPixel(j,i, A.getPixel(A.width() - i - 1, j));
         }
       }
@@ -148,7 +147,6 @@ void Image::rotate(int degree) {
     case 180:
       for(int i = _height - 1; i >= 0; i--) {
         for(int j = _width - 1; j >= 0; j--) {
-          // cout << j << ',' << i << ':' << A.width() - i - 1 << ',' << j << endl;
           setPixel(j,i, A.getPixel(_width - j - 1, _height - i - 1));
         }
       }
@@ -157,7 +155,6 @@ void Image::rotate(int degree) {
       _width = A.height(), _height = A.width();
       for(int j = _width - 1; j >= 0 ; j--) {
         for(int i = 0; i < _height; i++) {
-          // cout << j << ',' << i << ':' << A.width() - i - 1 << ',' << j << endl;
           setPixel(j,i, A.getPixel(i, A.height() - j - 1));
         }
       }
@@ -166,8 +163,6 @@ void Image::rotate(int degree) {
       cout << "NO VALID ROTATION VALUE" << endl <<
               "THE ORIGINAL IMAGE WILL BE GIVEN BACK" << endl;
   }
-  // cout << "input: " << _width << ',' << _height << endl;
-  // return B;
 }
 
 void Image::histogram(int ceiling, string plot_name) {
@@ -178,9 +173,6 @@ void Image::histogram(int ceiling, string plot_name) {
     _histogram[value] += 1;
     if(_histogram[value] > top) top = _histogram[value];
   }
-  // for(int i = 0; i < _histogram.size(); i++) {
-  //   cout << i << " = " << _histogram[i] << endl;
-  // }
   histogramPlot(top, ceiling, plot_name);
 }
 void Image::histogramPlot(int top, int ceiling, string plot_name) {
@@ -191,8 +183,7 @@ void Image::histogramPlot(int top, int ceiling, string plot_name) {
     for(int i = height - 1; i >= 0 ; i--) {
       if(i >= height - _histogram[j]) {
         setPlot(j, i, j);
-      } //else if(j == 125 && ) setPlot(j, i, 145);
-      else setPlot(j, i, (255 - j));
+      }else setPlot(j, i, (255 - j));
     }
   }
   for(int i = 0; i < _histogram.size(); i++) {
