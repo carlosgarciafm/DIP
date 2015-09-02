@@ -12,9 +12,9 @@ Image::Image() {
   _max = 255;
 }
 
-Image::Image(int height, int width, int max) : _pixels(width * height, 0),
-                                               _histogram(width * height, 0),
-                                               _plot(width * height, 0) {
+Image::Image(int height, int width, int max) : _pixels((width * height), 0),
+                                               _histogram((width * height), 0),
+                                               _plot((width * height), 0) {
   _width = width;
   _height = height;
   _max = max;
@@ -61,7 +61,7 @@ void Image::write(string file_name) const {
   F << _max << endl;
   for(int n = 0; n < _pixels.size(); n++) {
     F << _pixels[n] << ' ';
-    if(n % _width == (_width - 1)) {
+    if((n % _width) == (_width - 1)) {
       F << endl;
     }
   }
@@ -109,9 +109,9 @@ void Image::negative() {
 
 void Image::posterize(int levels) {
   for(int n = 0; n < _pixels.size(); n++) {
-    double value = double(_pixels[n]) / _max * (levels - 1);
+    double value = (double(_pixels[n]) / _max) * (levels - 1);
     value = round(value);
-    _pixels[n] = int(value * _max / (levels - 1));
+    _pixels[n] = int((value * _max) / (levels - 1));
   }
 }
 
@@ -123,8 +123,8 @@ Image Image::zoom(int i1, int j1, int i2, int j2, int factor) {
   Image Z(height, width, _max);
   for(int m = 0; m < B.height(); m++) {
     for(int n = 0; n < B.width(); n++) {
-      for(int i = m * factor; i < m * factor + factor; i++) {
-        for(int j = n * factor; j < n * factor + factor; j++) {
+      for(int i = m * factor; i < ((m * factor) + factor); i++) {
+        for(int j = n * factor; j < ((n * factor) + factor); j++) {
           Z.setPixel(i, j, getPixel(m, n));
         }
       }
@@ -143,14 +143,14 @@ void Image::rotate(int degree) {
       _width = A.height(), _height = A.width();
       for(int j = 0; j < _width; j++) {
         for(int i = _height - 1; i >= 0; i--) {
-          setPixel(i, j, A.getPixel(j, (A.width() - i - 1)));
+          setPixel(i, j, A.getPixel(j, ((A.width() - i) - 1)));
         }
       }
       break;
     case 180:
       for(int i = _height - 1; i >= 0; i--) {
         for(int j = _width - 1; j >= 0; j--) {
-          setPixel(i, j, A.getPixel((_height - i - 1), (_width - j - 1)));
+          setPixel(i, j, A.getPixel(((_height - i) - 1), ((_width - j) - 1)));
         }
       }
       break;
@@ -158,7 +158,7 @@ void Image::rotate(int degree) {
       _width = A.height(), _height = A.width();
       for(int j = _width - 1; j >= 0 ; j--) {
         for(int i = 0; i < _height; i++) {
-          setPixel(i, j, A.getPixel(A.height() - j - 1, i));
+          setPixel(i, j, A.getPixel(((A.height() - j) - 1), i));
         }
       }
       break;
