@@ -12,7 +12,7 @@ Image::Image() {
   _max = 255;
 }
 
-Image::Image(int width, int height, int max) : _pixels(width * height, 0),
+Image::Image(int height, int width, int max) : _pixels(width * height, 0),
                                                _histogram(width * height, 0),
                                                _plot(width * height, 0) {
   _width = width;
@@ -48,8 +48,8 @@ void Image::read(string file_name) {
   S >> _width >> _height;
   F >> _max;
   _pixels.resize(_width * _height);
-  for(int i = 0; i < _pixels.size(); i++) {
-    F >> _pixels[i];
+  for(int n = 0; n < _pixels.size(); n++) {
+    F >> _pixels[n];
   }
 }
 
@@ -59,15 +59,15 @@ void Image::write(string file_name) const {
   F << "# This file was written by CarlosGarcia" << endl;
   F << _width << ' ' << _height << endl;
   F << _max << endl;
-  for(int i = 0; i < _pixels.size(); i++) {
-    F << _pixels[i] << ' ';
-    if(i % _width == (_width - 1)) {
+  for(int n = 0; n < _pixels.size(); n++) {
+    F << _pixels[n] << ' ';
+    if(n % _width == (_width - 1)) {
       F << endl;
     }
   }
 }
 
-void checkUp(int &j1, int &i1, int &j2, int &i2, int width, int height) {
+void checkUp(int &i1, int &j1, int &i2, int &j2, int height, int width) {
     int c = 0;
     if(j1 < 0) { j1 = 0; c++; }
     if(j2 > width) { j2 = width; c++; }
@@ -75,54 +75,57 @@ void checkUp(int &j1, int &i1, int &j2, int &i2, int width, int height) {
     if(i2 > height) { i2 = height; c++; }
     if(c != 0) cout << "At least one of the given coordinates is out of the image range" << endl;
 }
-Image Image::chunk(int j1, int i1, int j2, int i2) const {
-  checkUp(j1, i1, j2, i2, _width, _height);
-  Image A((j2 - j1), (i2 - i1), _max);
+Image Image::chunk(int i1, int j1, int i2, int j2) const {
+  checkUp(i1, j1, i2, j2, _height, _width);
+  Image A((i2 - i1), (j2 - j1), _max);
   for(int m = i1; m < i2; m++) {
     for(int n = j1; n < j2; n++) {
       int ip = m - i1;
       int jp = n - j1;
-      A.setPixel(jp, ip, getPixel(n, m));
+      A.setPixel(ip, jp, getPixel(m, n));
     }
   }
   return A;
 }
 
-void Image::stamp(int j, int i, const Image& P) {
-  for(int m = i; m < (i + P.height()); m++) {
-    for(int n = j; n < (j + P.width()); n++) {
+void Image::stamp(int i, int j, const Image& P) {
+  int i2 = i + (P.height() - 1);
+  int j2 = j + (P.width() - 1);
+  checkUp(i, j, i2, j2, _height, _width);
+  for(int m = i; m <= i2; m++) {
+    for(int n = j; n <= j2; n++) {
       int x = m - i;
       int y = n - j;
-      setPixel(n, m, P.getPixel(y, x));
+      setPixel(m, n, P.getPixel(x, y));
     }
   }
 }
 
 void Image::negative() {
-  for(int i = 0; i < _pixels.size(); i++) {
-    _pixels[i] = _max - _pixels[i];
+  for(int n = 0; n < _pixels.size(); n++) {
+    _pixels[n] = _max - _pixels[n];
   }
 }
 
 void Image::posterize(int levels) {
-  for(int i = 0; i < _pixels.size(); i++) {
-    double value = double(_pixels[i]) / _max * (levels - 1);
+  for(int n = 0; n < _pixels.size(); n++) {
+    double value = double(_pixels[n]) / _max * (levels - 1);
     value = round(value);
-    _pixels[i] = int(value * _max / (levels - 1));
+    _pixels[n] = int(value * _max / (levels - 1));
   }
 }
 
-Image Image::zoom(int j1, int i1, int j2, int i2, int factor) {
+Image Image::zoom(int i1, int j1, int i2, int j2, int factor) {
   Image B;
-  B = chunk(j1, i1, j2, i2);
+  B = chunk(i1, j1, i2, j2);
   int width = (j2 - j1) * factor;
   int height = (i2 - i1) * factor;
-  Image Z(width, height, _max);
+  Image Z(height, width, _max);
   for(int m = 0; m < B.height(); m++) {
     for(int n = 0; n < B.width(); n++) {
       for(int i = m * factor; i < m * factor + factor; i++) {
         for(int j = n * factor; j < n * factor + factor; j++) {
-          Z.setPixel(j, i, getPixel(n, m));
+          Z.setPixel(i, j, getPixel(m, n));
         }
       }
     }
@@ -131,7 +134,7 @@ Image Image::zoom(int j1, int i1, int j2, int i2, int factor) {
 }
 
 void Image::rotate(int degree) {
-  Image A(_width, _height, _max);
+  Image A(_height, _width, _max);
   for(int n = 0; n < _pixels.size(); n++) {
     A._pixels[n] = _pixels[n];
   }
@@ -140,14 +143,14 @@ void Image::rotate(int degree) {
       _width = A.height(), _height = A.width();
       for(int j = 0; j < _width; j++) {
         for(int i = _height - 1; i >= 0; i--) {
-          setPixel(j,i, A.getPixel(A.width() - i - 1, j));
+          setPixel(i, j, A.getPixel(j, (A.width() - i - 1)));
         }
       }
       break;
     case 180:
       for(int i = _height - 1; i >= 0; i--) {
         for(int j = _width - 1; j >= 0; j--) {
-          setPixel(j,i, A.getPixel(_width - j - 1, _height - i - 1));
+          setPixel(i, j, A.getPixel((_height - i - 1), (_width - j - 1)));
         }
       }
       break;
@@ -155,7 +158,7 @@ void Image::rotate(int degree) {
       _width = A.height(), _height = A.width();
       for(int j = _width - 1; j >= 0 ; j--) {
         for(int i = 0; i < _height; i++) {
-          setPixel(j,i, A.getPixel(i, A.height() - j - 1));
+          setPixel(i, j, A.getPixel(A.height() - j - 1, i));
         }
       }
       break;
@@ -168,8 +171,8 @@ void Image::rotate(int degree) {
 void Image::histogram(int ceiling, string plot_name) {
   int top = 0;
   _histogram.resize(_max + 1);
-  for(int i = 0; i < _pixels.size(); i++) {
-    int value = _pixels[i];
+  for(int n = 0; n < _pixels.size(); n++) {
+    int value = _pixels[n];
     _histogram[value] += 1;
     if(_histogram[value] > top) top = _histogram[value];
   }
@@ -182,19 +185,19 @@ void Image::histogramPlot(int top, int ceiling, string plot_name) {
     _histogram[j] = ceil((double(height) / top) * _histogram[j]);
     for(int i = height - 1; i >= 0 ; i--) {
       if(i >= height - _histogram[j]) {
-        setPlot(j, i, j);
-      }else setPlot(j, i, (255 - j));
+        setPlot(i, j, j);
+      }else setPlot(i, j, (255 - j));
     }
   }
-  for(int i = 0; i < _histogram.size(); i++) {
-    cout << i << " = " << _histogram[i] << endl;
+  for(int n = 0; n < _histogram.size(); n++) {
+    cout << n << " = " << _histogram[n] << endl;
   }
   ofstream F(plot_name.c_str());
   F << "P2" << endl;
   F << "# This file was written by CarlosGarcia" << endl;
   F << _max + 1 << ' ' << height << endl;
   F << _max << endl;
-  for(int m = 0; m < _plot.size(); m++) {
-    F << _plot[m] << endl;
+  for(int n = 0; n < _plot.size(); n++) {
+    F << _plot[n] << endl;
   }
 }
