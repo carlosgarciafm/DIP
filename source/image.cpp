@@ -176,7 +176,9 @@ void Image::histogram(int ceiling, string plot_name) {
     _histogram[value] += 1;
     if(_histogram[value] > top) top = _histogram[value];
   }
-  histogramPlot(top, ceiling, plot_name);
+  if(plot_name != "null") {
+    histogramPlot(top, ceiling, plot_name);
+  }
 }
 void Image::histogramPlot(int top, int ceiling, string plot_name) {
   int height = ceiling;
@@ -188,9 +190,6 @@ void Image::histogramPlot(int top, int ceiling, string plot_name) {
         setPlot(i, j, j);
       }else setPlot(i, j, (255 - j));
     }
-  }
-  for(int n = 0; n < _histogram.size(); n++) {
-    cout << n << " = " << _histogram[n] << endl;
   }
   ofstream F(plot_name.c_str());
   F << "P2" << endl;
