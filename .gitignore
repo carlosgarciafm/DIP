@@ -28,9 +28,11 @@
 *.out
 *.app
 
-# Images pgm
-pbm/*
+# Images pbm
+pgm/*
 *.pgm
+ppm/*
+*.ppm
 
 # Test files
 sandbox/*
