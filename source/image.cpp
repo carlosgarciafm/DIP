@@ -60,10 +60,10 @@ void Image::write(string file_name) const {
   F << _width << ' ' << _height << endl;
   F << _max << endl;
   for(int n = 0; n < _pixels.size(); n++) {
-    F << _pixels[n] << ' ';
-    if((n % _width) == (_width - 1)) {
-      F << endl;
-    }
+    F << _pixels[n] << endl;
+    // if((n % _width) == (_width - 1)) {
+    //   F << endl;
+    // }
   }
 }
 
@@ -165,6 +165,42 @@ void Image::rotate(int degree) {
     default:
       cout << "NO VALID ROTATION VALUE" << endl <<
               "THE ORIGINAL IMAGE WILL BE GIVEN BACK" << endl;
+  }
+}
+
+void Image::substraction(Image& S) {
+  int top = 0, low = _max;
+  for(int i = 0; i < _height; i++) {
+    for(int j = 0; j < _width; j++) {
+      int sub = abs(getPixel(i, j) - S.getPixel(i, j));
+      setPixel(i, j, sub);
+    }
+  }
+  topLow(top, low);
+  normalize(top, low);
+}
+void Image::addition(Image& A) {
+  int top = 0, low = _max;
+  for(int i = 0; i < A._height; i++) {
+    for(int j = 0; j < _width; j++) {
+      int sub = getPixel(i, j) + A.getPixel(i, j);
+      setPixel(i, j, sub);
+    }
+  }
+  topLow(top, low);
+  normalize(top, low);
+}
+
+void Image::topLow(int& top, int& low) {
+  for(int n = 0; n < _pixels.size(); n++) {
+    if(_pixels[n] > top) top = _pixels[n];
+    if(_pixels[n] < low) low = _pixels[n];
+  }
+}
+void Image::normalize(int top, int low) {
+  for(int n = 0; n < _pixels.size(); n++) {
+    int value = floor((float(_max) / (top)) * (_pixels[n]));
+    _pixels[n] = value;
   }
 }
 

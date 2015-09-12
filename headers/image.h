@@ -31,6 +31,11 @@ public:
   void posterize(int levels);
   Image zoom(int i1, int j1, int i2, int j2, int factor);
   void rotate(int degree);
+  void substraction(Image& S);
+  void addition(Image& A);
+
+  void topLow(int& top, int& low);
+  void normalize(int top, int low);
 
   int getPlot(int i, int j) {
     return _plot[(i * (_max + 1)) + j];
