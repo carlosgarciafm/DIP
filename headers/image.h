@@ -7,10 +7,11 @@ class Image {
   std::vector<int> _plot;
   int _width, _height;
   int _max;
+  std::string _type;
 
 public:
   Image();
-  Image(int height, int width, int max);
+  Image(int height, int width, int max, std::string type);
   Image(const Image& other);
 
   int width() const { return _width; }

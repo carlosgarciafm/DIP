@@ -10,14 +10,16 @@ Image::Image() {
   _width = 0;
   _height = 0;
   _max = 255;
+  _type = "NULL";
 }
 
-Image::Image(int height, int width, int max) : _pixels((width * height), 0),
+Image::Image(int height, int width, int max, string type) : _pixels((width * height), 0),
                                                _histogram((width * height), 0),
                                                _plot((width * height), 0) {
   _width = width;
   _height = height;
   _max = max;
+  _type = type;
 }
 
 Image::Image(const Image& other) : _pixels(other._pixels),
@@ -26,6 +28,7 @@ Image::Image(const Image& other) : _pixels(other._pixels),
   _width = other._width;
   _height = other._height;
   _max = other._max;
+  _type = other._type;
 }
 
 void Image::read(string file_name) {
@@ -36,10 +39,12 @@ void Image::read(string file_name) {
   }
   string line;
   getline(F, line);
-  if(line != "P2") {
-    cout << "WRONG FORMAT" << endl;
-    return;
-  }
+  _type = line;
+  cout << _type << endl;
+  // if(line != "P2") {
+  //   cout << "WRONG FORMAT" << endl;
+  //   return;
+  // }
   getline(F, line);
   while(line[0] == '#') {
     getline(F, line);
@@ -55,7 +60,7 @@ void Image::read(string file_name) {
 
 void Image::write(string file_name) const {
   ofstream F(file_name.c_str());
-  F << "P2" << endl;
+  F << "# " << _type << endl;
   F << "# This file was written by CarlosGarcia" << endl;
   F << _width << ' ' << _height << endl;
   F << _max << endl;
@@ -77,7 +82,7 @@ void checkUp(int &i1, int &j1, int &i2, int &j2, int height, int width) {
 }
 Image Image::chunk(int i1, int j1, int i2, int j2) const {
   checkUp(i1, j1, i2, j2, _height, _width);
-  Image A((i2 - i1), (j2 - j1), _max);
+  Image A((i2 - i1), (j2 - j1), _max, _type);
   for(int m = i1; m < i2; m++) {
     for(int n = j1; n < j2; n++) {
       int ip = m - i1;
@@ -120,7 +125,7 @@ Image Image::zoom(int i1, int j1, int i2, int j2, int factor) {
   B = chunk(i1, j1, i2, j2);
   int width = (j2 - j1) * factor;
   int height = (i2 - i1) * factor;
-  Image Z(height, width, _max);
+  Image Z(height, width, _max, _type);
   for(int m = 0; m < B.height(); m++) {
     for(int n = 0; n < B.width(); n++) {
       for(int i = m * factor; i < ((m * factor) + factor); i++) {
@@ -134,7 +139,7 @@ Image Image::zoom(int i1, int j1, int i2, int j2, int factor) {
 }
 
 void Image::rotate(int degree) {
-  Image A(_height, _width, _max);
+  Image A(_height, _width, _max, _type);
   for(int n = 0; n < _pixels.size(); n++) {
     A._pixels[n] = _pixels[n];
   }
@@ -228,7 +233,7 @@ void Image::histogramPlot(int top, int ceiling, string plot_name) {
     }
   }
   ofstream F(plot_name.c_str());
-  F << "P2" << endl;
+  F << "# " << _type << endl;
   F << "# This file was written by CarlosGarcia" << endl;
   F << _max + 1 << ' ' << height << endl;
   F << _max << endl;
