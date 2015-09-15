@@ -4,13 +4,16 @@
 using namespace std;
 
 int main() {
-  Image I;
+  PPM Z;
+  Z.read("ppm/wc.ppm");
+  Z.write("ppm/wc_copy.ppm");
+  PGM I;
   I.read("pgm/wc.pgm");
   I.write("pgm/wc_copy.pgm");
-  // Image H;
+  // PGM H;
   // H.read("pgm/bc.pgm");
-  // Image J(I);
-  // Image K(H);
+  // PGM J(I);
+  // PGM K(H);
   // // H.negative();
   // H.substraction(I);
   // H.write("pgm/wc_subs2.pgm");
